@@ -13,7 +13,7 @@ class BaseModel:
         - Sets a unique 'id' for the instance.
         - Sets 'created_at' and 'updated_at' attributes to the current datetime.
         """
-		if kwargs:
+	    if kwargs:
 			for key, value in kwargs.items():
 				if key != '__class__':
 					if key == 'created_at' or key == 'updated_at':
