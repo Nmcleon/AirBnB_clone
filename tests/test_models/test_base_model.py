@@ -83,7 +83,7 @@ class TestBaseModel(unittest.TestCase):
         my_model.save()
         self.assertNotEqual(initial_updated_at, my_model.updated_at)
 
-    def test_to_dict_method(self):
+    def test_to_dict(self):
         my_model = BaseModel()
         my_model.name = "My First Model"
         my_model.my_number = 89
