@@ -3,8 +3,11 @@
 base model
 """
 
+import json
+import os
 import uuid
 from datetime import datetime
+import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -26,11 +29,19 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
 
+	def __str__(self):
+        """
+        Returns string representation of BaseModel instance.
+        - Includes the class name, 'id', and the instance's dictionary representation.
+        """
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+
     def save(self):
         """
         Update 'updated_at' attribute with the current datetime.
         """
         self.updated_at = datetime.now()
+		models.storage.save()
 
     def to_dict(self):
         """
@@ -38,18 +49,10 @@ class BaseModel:
         Includes 'id', 'created_at', 'updated_at', and '__class__' keys.
         'created_at' and 'updated_at' are converted to ISO format.
         """
-        class_name = self.__class__.__name__
-        return {
-            "id": self.id,
-            "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat(),
-            "__class__": class_name,
-        }
+        data = self.__dict__copy()
+		data["__class__"] = self.__class__.__name__
+        data["created_at"] = self.created_at.isoformat()
+        data["updated_at"] = self.updated_at.isoformat(
+        return data
 
-    def __str__(self):
-        """
-        Returns string representation of BaseModel instance.
-        - Includes the class name, 'id', and the instance's dictionary representation.
-        """
-        class_name = self.__class__.__name__
-        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+    
