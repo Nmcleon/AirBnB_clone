@@ -7,7 +7,7 @@ from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
-	__classes = {
+    __classes = {
         "BaseModel"
     }
 
@@ -17,8 +17,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF command to exit the program"""
-        print("")
+        # print("")
         return True
+
+    def do_help(self, line):
+        """Get help on commands"""
+        cmd.Cmd.do_help(self, line)
+        
+    def help_EOF(self):
+        print("Ctrl+D command to exit the program\n")
 
     def emptyline(self):
         """Do nothing on an empty line"""
