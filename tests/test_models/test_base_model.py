@@ -110,3 +110,5 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn("'my_number': 89", str_repr)
         self.assertIn("'__class__': 'BaseModel'", str_repr)
 
+if __name__ == "__main":
+    unittest.main()
