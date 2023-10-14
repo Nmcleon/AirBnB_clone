@@ -31,17 +31,17 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing on an empty line"""
         pass
 	
-	def do_create(self, args):
-		"""Create a new object"""
-		if not args:
-			print("** class name missing **")
-			return
-			if args not in HBNBCommand.__classes:
-				print("** class doesn't exist **")
-				return
-				new_obj = HBNBCommand.__classes[args]()
-				new_obj.save()
-				print(new_obj.id)
+    def do_create(self, args):
+        """Create a new object"""
+        if not args:
+            print("** class name missing **")
+            return
+        if args not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+            return
+        new_obj = HBNBCommand.__classes[args]()
+        new_obj.save()
+        print(new_obj.id)
     
     def do_show(self, args):
         """Show the specified object"""
