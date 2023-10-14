@@ -8,7 +8,7 @@ from models.base_model import BaseModel
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
-        "BaseModel"
+        "BaseModel": BaseModel
     }
 
     def do_quit(self, line):
@@ -36,13 +36,17 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
+
+        class_name = args.split()[0]
+
+        if class_name not in HBNBCommand.__classes:
+            print("** class name missing **")
             return
-        new_obj = HBNBCommand.__classes[args]()
+
+        new_obj = HBNBCommand.__classes[class_name]()
         new_obj.save()
         print(new_obj.id)
-    
+
     def do_show(self, args):
         """Print the string representation of an instance
         based on the class name and id
@@ -50,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        split_args = args.splir()
+        split_args = args.split()
         if split_args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
@@ -73,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         split_args = args.split()
-        if split_args[0] nnot in HBNBCommand.__classes:
+        if split_args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
         if len(split_args) == 1:
