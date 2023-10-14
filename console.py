@@ -102,6 +102,50 @@ class HBNBCommand(cmd.Cmd):
         result = [str(all_objs[obj]) for obj in all_objs if obj.startswith(args + '.')]
         print(result)
 
+    def do_update(self, args):
+        """  Update an instance based 
+        on the class name and id
+        """
+        if not args:
+            print("** class name missing **")
+            return
+        split_args = args.split()
+        if split_args[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+            return
+        if len(split_args) < 2:
+            print("** instance id missing **")
+            return
+        obj_id = "{}.{}".format(split_args[0], split_args[1])
+        all_objs = storage.all()
+        if obj_id not in all_objs:
+            print("** no instance found **")
+            return
+        if len(split_args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(split_args) < 4:
+            print("** value missing **")
+            return
+
+        attribute_name = split_args[2]
+        # Get attribute value
+        attribute_value = split_args[3]
+        if attribute_value.startswitch('"') and attribute_value.endswitch('"'):
+            attribute_value = attribute_value[1:-1]
+        obj_to_update = all_objs[obj_id]
+        if attribute_name != 'id' and attribute_name != 'created_at' and attribute_name != 'updated_at':
+            try:
+                attribute_value = int(attribute_value)
+            except ValueError:
+                try:
+                    attribute_value = float(attribute_value)
+                except ValueError:
+                    pass
+                #update obj's attribute
+                setattr(obj_to_update, attribute_name, attribute_value)
+                obj_to_update.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
