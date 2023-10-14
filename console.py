@@ -88,9 +88,20 @@ class HBNBCommand(cmd.Cmd):
         store.save()
         
     def do_all(self, args):
-        """List all objects or specific objects"""
-        # Parse the 'args' to get class name (optional)
-        # List all objects or filter objects by class name
+        """List all string representation of all instances based
+        or not on the class name
+        """
+        all_objs = storage.all()
+        if not args:
+            result = [str(all_objs[obj]) for obj in all_objs]
+            print(result)
+            return
+        if args not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+            return
+        result = [str(all_objs[obj]) for obj in all_objs if obj.startswith(args + '.')]
+        print(result)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
