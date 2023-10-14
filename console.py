@@ -65,10 +65,28 @@ class HBNBCommand(cmd.Cmd):
         print(all_objs[obj_id])
         
     def do_destroy(self, args):
-        """Destroy the specified object"""
-        # Parse the 'args' to get class name and object ID
+        """Deletes an instance based 
+        on the class name and id
+        """
         # Delete the object
-
+        if not args:
+            print("** class name missing **")
+            return
+        split_args = args.split()
+        if split_args[0] nnot in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+            return
+        if len(split_args) == 1:
+            print("** instance id missing **")
+            return
+        all_objs = storage.all()
+        obj_id = "{}.{}".format(split_args[0], split_args[1])
+        if obj_id not in all_objs:
+            print("** no instance found **")
+            return
+        del all_objs[obj_id]
+        store.save()
+        
     def do_all(self, args):
         """List all objects or specific objects"""
         # Parse the 'args' to get class name (optional)
