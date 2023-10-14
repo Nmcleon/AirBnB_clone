@@ -59,7 +59,6 @@ class HBNBCommand(cmd.Cmd):
             return
         all_objs = storage.all()
         obj_id = "{}.{}".format(split_args[0], split_args[1])
-        if obj_id = "{}.{}".format(split_args[0], split_args[1])
         if obj_id not in all_objs:
             print("** no instance found **")
             return
