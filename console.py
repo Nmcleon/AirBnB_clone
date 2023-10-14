@@ -74,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
         """Deletes an instance based 
         on the class name and id
         """
-        # Delete the object
+        obj_dict = storage.all()
         if not args:
             print("** class name missing **")
             return
@@ -85,13 +85,22 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        all_objs = storage.all()
-        obj_id = "{}.{}".format(args[0], args[1])
+        elif "{}.{}".format(args[0], args[1]) not in obj_dict.keys():
+            print("** no instance found **")
+            return
+        else:
+            del obj_dict["{}.{}".format(args[0], args[1])]
+            storage.save()
+
+        """
+        #all_objs = storage.all()
+        #obj_id = "{}.{}".format(args[0], args[1])
         if obj_id not in all_objs:
             print("** no instance found **")
             return
         del all_objs[obj_id]
         store.save()
+        """
 
     def do_all(self, args):
         """List all string representation of all instances based
