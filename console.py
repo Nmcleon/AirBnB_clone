@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF command to exit the program"""
-        # print("")
+        #print("")
         return True
 
     def do_help(self, line):
@@ -30,10 +30,19 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing on an empty line"""
         pass
-
-    def do_create(self, args):
-        """Create a new object"""
-        
+	
+	def do_create(self, args):
+		"""Create a new object"""
+		if not args:
+			print("** class name missing **")
+			return
+			if args not in HBNBCommand.__classes:
+				print("** class doesn't exist **")
+				return
+				new_obj = HBNBCommand.__classes[args]()
+				new_obj.save()
+				print(new_obj.id)
+    
     def do_show(self, args):
         """Show the specified object"""
         # Parse the 'args' to get class name and object ID
