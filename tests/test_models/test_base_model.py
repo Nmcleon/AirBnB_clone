@@ -6,7 +6,11 @@ import models
 from models.base_model import BaseModel
 from datetime import datetime
 import os
+import inspect
 
+"""
+Defines unittests for models/base_model.py
+"""
 
 class TestBaseModel(unittest.TestCase):
     @classmethod
@@ -98,16 +102,16 @@ class TestBaseModel(unittest.TestCase):
         my_model.my_number = 89
         my_model_json = my_model.to_dict()
 
-    self.assertEqual(my_model_json["id"], my_model.id)
-    self.assertEqual(my_model_json["__class__"], "BaseModel")
-    self.assertEqual(
-        my_model_json["created_at"],
-        my_model.created_at.isoformat()
-    )
-    self.assertEqual(
-        my_model_json["updated_at"],
-        my_model.updated_at.isoformat()
-    )
+        self.assertEqual(my_model_json["id"], my_model.id)
+        self.assertEqual(my_model_json["__class__"], "BaseModel")
+        self.assertEqual(
+            my_model_json["created_at"],
+            my_model.created_at.isoformat()
+        )
+        self.assertEqual(
+            my_model_json["updated_at"],
+            my_model.updated_at.isoformat()
+        )
 
     def test_str_method(self):
         my_model = BaseModel()
@@ -117,6 +121,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn("[BaseModel] ({})".format(my_model.id), str_repr)
         self.assertIn("'name': 'My First Model'", str_repr)
         self.assertIn("'my_number': 89", str_repr)
+        print(str_repr)
         self.assertIn("'__class__': 'BaseModel'", str_repr)
 
 

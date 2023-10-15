@@ -11,6 +11,9 @@ import models
 
 
 class BaseModel:
+    """
+    This is a docstring for the BaseModel class.
+    """
     def __init__(self, *args, **kwargs):
         """
         This method initializes a BaseModel instance.
