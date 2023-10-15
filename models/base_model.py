@@ -56,7 +56,9 @@ class BaseModel:
         'created_at' and 'updated_at' are converted to ISO format.
         """
         data = self.__dict__.copy()
-        data["created_at"] = self.created_at.isoformat()
-        data["updated_at"] = self.updated_at.isoformat()
+        if isinstance(data["created_at"], datetime):
+            data["created_at"] = data["created_at"].isoformat()
+        if isinstance(data["updated_at"], datetime):
+            data["updated_at"] = data["updated_at"].isoformat()
         data["__class__"] = self.__class__.__name__
         return data
