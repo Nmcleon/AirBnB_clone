@@ -102,7 +102,7 @@ class HBNBCommand(cmd.Cmd):
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
-        all_objs = storage.all(class_name)
+        all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
         
         if obj_id not in all_objs:
@@ -133,14 +133,16 @@ class HBNBCommand(cmd.Cmd):
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
-        all_objs = storage.all(class_name)
+        all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
         
         if obj_id not in all_objs:
             print("** no instance found **")
             return
+
+        obj_to_delete = all_objs[obj_id]
         del all_objs[obj_id]
-        storage.save()
+        obj_to_delete.save()
         print()
         
         """
