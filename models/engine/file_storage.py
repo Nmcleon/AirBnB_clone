@@ -11,6 +11,19 @@ from models.review import Review
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+    classes = {}
+
+    def __init__(self):
+        """init file storage"""
+        self.classes = {
+            'BaseModel': BaseModel,
+            'User': User,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review
+        }
 
     def all(self):
         return FileStorage.__objects
@@ -32,7 +45,8 @@ class FileStorage:
                 data = json.load(file)
                 for key, value in data.items():
                     class_name, obj_id = key.split('.')
-                    obj = models.classes[class_name](**value)
-                    FileStorage.__objects[key] = obj
+                    if class_name in self.classes:
+                        obj = self.classes[class_name](**value)
+                        FileStorage.__objects[key] = obj
         except Exception:
             pass
