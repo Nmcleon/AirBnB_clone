@@ -34,9 +34,10 @@ class BaseModel:
     def __str__(self):
         """
         Returns string representation of BaseModel instance.
-        - Includes the class name, 'id', and the instance's dictionary representation.
+        Includes class name, 'id', instance's dictionary.
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """
@@ -54,5 +55,5 @@ class BaseModel:
         data = self.__dict__.copy()
         data["created_at"] = self.created_at.isoformat()
         data["updated_at"] = self.updated_at.isoformat()
-        data["__class__"] = self.__class__.__name__      
+        data["__class__"] = self.__class__.__name__
         return data

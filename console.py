@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
@@ -32,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
         """EOF command to exit the program"""
         print("")
         return True
-    
+
     def default(self, arg):
         """Default behavior for cmd"""
         arg_dict = {
@@ -97,14 +98,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -112,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
         print(obj)
 
     def do_destroy(self, args):
-        """Deletes an instance based 
+        """Deletes an instance based
         on the class name and id
         """
         obj_dict = storage.all()
@@ -128,14 +129,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -144,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
         del all_objs[obj_id]
         obj_to_delete.save()
         print()
-        
+
         """
         #all_objs = storage.all()
         #obj_id = "{}.{}".format(args[0], args[1])
@@ -176,7 +177,7 @@ class HBNBCommand(cmd.Cmd):
         count = 0
         for obj in storage.all().values():
             if arg[0] == obj.__class__.name__:
-                count +=1
+                count += 1
         print(count)
 
     def do_update(self, args):
@@ -202,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
         if len(split_args) < 4:
             print("** value missing **")
             return
-            
+
         attribute_name = split_args[2]
         attribute_value = split_args[3]
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
@@ -219,8 +220,10 @@ class HBNBCommand(cmd.Cmd):
                 attribute_value = float(attribute_value)
             except ValueError:
                 pass
-            
+
             setattr(obj_to_update, attribute_name, attribute_value)
             obj_to_update.save()
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
