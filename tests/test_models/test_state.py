@@ -1,26 +1,31 @@
 #!/usr/bin/python3
+"""
+Test State class
+"""
 
-import unittest
+from models import storage
 from models.state import State
+import unittest
+import os
 
-
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "Testing database storage")
 class TestState(unittest.TestCase):
-
-    def test_init(self):
-        """Tests that the name attribute
-          of a new `State` object are initialized
-            to empty strings."""
+    def test_attributes(self):
         state = State()
+        self.assertTrue(hasattr(state, "name"))
         self.assertEqual(state.name, "")
 
-    def test_two_state_unique_ids(self):
-        """this function test if two
-          instantiated object of STATE
-            has differents IDs"""
-        s1 = State()
-        s2 = State()
-        self.assertNotEqual(s1.id, s2.id)
+    def test_save(self):
+        state = State()
+        state.save()
+        self.assertNotEqual(state.created_at, state.updated_at)
 
+    def test_to_dict(self):
+        state = State()
+        state_dict = state.to_dict()
+        self.assertEqual(state_dict["__class__"], "State")
+        self.assertIsInstance(state_dict["created_at"], str)
+        self.assertIsInstance(state_dict["updated_at"], str)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
