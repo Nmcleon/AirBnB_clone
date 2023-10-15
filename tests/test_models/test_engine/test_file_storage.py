@@ -27,10 +27,10 @@ class TestFileStorageSave(unittest.TestCase):
         self.fs.new(self.obj2)
         self.fs.save()
 
-        with open("file.jason", "r") as file:
+        with open("file.json", "r") as file:
             data = json.load(file)
 
-        key1 = "{}.{}".format(self.obj1.__class__.__name__, self.obj.id)
+        key1 = "{}.{}".format(self.obj1.__class__.__name__, self.obj1.id)
         key2 = "{}.{}".format(self.obj2.__class__.__name__, self.obj2.id)
 
         self.assertTrue(key1 in data)

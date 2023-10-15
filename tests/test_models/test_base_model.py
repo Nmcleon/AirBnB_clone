@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-import unittest
 import pep8
+import unittest
 import models
 from models.base_model import BaseModel
 from datetime import datetime
@@ -40,8 +40,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(len(BaseModel.__doc__) >= 1)
 
     def test_func_docstrings(self):
-    for func in self.setup:
-        self.assertTrue(len(func[1].__doc__) >= 1)
+        for func in self.setup:
+            self.assertTrue(len(func[1].__doc__) >= 1)
 
     def test_type(self):
         self.assertIsInstance(self.BM, BaseModel)
