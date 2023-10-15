@@ -21,7 +21,8 @@ class HBNBCommand(cmd.Cmd):
         "City": City,
         "Place": Place,
         "Amenity": Amenity,
-        "Review": Review
+        "Review": Review,
+        "User": User
     }
 
     def do_quit(self, line):
@@ -30,30 +31,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF command to exit the program"""
-        print("")
+        #print("")
         return True
     
-    def default(self, arg):
-        """Default behavior for cmd"""
-        arg_dict = {
-            "all": self.do_all,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "count": self.do_count,
-            "update": self.do_update
-        }
-        match = re.search(r"\.", arg)
-        if match is not None:
-            arg = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", arg[1])
-            if match is not None:
-                command = [arg[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in arg_dict.keys():
-                    call = "{} {}".format(arg[0], command[1])
-                    return arg_dict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
-        return False
-
     def do_help(self, line):
         """Get help on commands"""
         cmd.Cmd.do_help(self, line)
@@ -178,28 +158,25 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def do_update(self, args):
-        """Updates an instance based on the class name and id."""
+        """Updates an instance based on the class name and id"""
         if not args:
             print("** class name missing **")
             return
-        split_args = args.split()
-        if split_args[0] not in HBNBCommand.__classes:
+
+        args = args.split()
+        class_name = args[0]
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(split_args) < 2:
+
+        if len(args) < 2:
             print("** instance id missing **")
             return
-        obj_id = "{}.{}".format(split_args[0], split_args[1])
-        all_objs = storage.all()
-        if obj_id not in all_objs:
-            print("** no instance found **")
-            return
-        if len(split_args) < 3:
-            print("** attribute name missing **")
-            return
-        if len(split_args) < 4:
-            print("** value missing **")
-            return
+
+        obj_id = args[1]
+        self.update_instance(class_name, obj_id, args[2:])
+
             
         attribute_name = split_args[2]
         attribute_value = split_args[3]
