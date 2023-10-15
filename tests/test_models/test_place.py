@@ -11,7 +11,9 @@ from models.amenity import Amenity
 import unittest
 import os
 
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "Testing database storage")
+
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') ==
+                 'db', "Testing database storage")
 class TestPlace(unittest.TestCase):
     def test_attributes(self):
         place = Place()
@@ -49,6 +51,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(place_dict["__class__"], "Place")
         self.assertIsInstance(place_dict["created_at"], str)
         self.assertIsInstance(place_dict["updated_at"], str)
+
 
 if __name__ == "__main__":
     unittest.main()

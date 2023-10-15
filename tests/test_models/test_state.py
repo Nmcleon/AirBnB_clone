@@ -8,7 +8,9 @@ from models.state import State
 import unittest
 import os
 
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "Testing database storage")
+
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') ==
+                 'db', "Testing database storage")
 class TestState(unittest.TestCase):
     def test_attributes(self):
         state = State()
@@ -26,6 +28,7 @@ class TestState(unittest.TestCase):
         self.assertEqual(state_dict["__class__"], "State")
         self.assertIsInstance(state_dict["created_at"], str)
         self.assertIsInstance(state_dict["updated_at"], str)
+
 
 if __name__ == "__main__":
     unittest.main()

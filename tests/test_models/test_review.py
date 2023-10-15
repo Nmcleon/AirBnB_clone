@@ -10,7 +10,9 @@ from models.user import User
 import unittest
 import os
 
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "Testing database storage")
+
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') ==
+                 'db', "Testing database storage")
 class TestReview(unittest.TestCase):
     def test_attributes(self):
         review = Review()
@@ -32,6 +34,7 @@ class TestReview(unittest.TestCase):
         self.assertEqual(review_dict["__class__"], "Review")
         self.assertIsInstance(review_dict["created_at"], str)
         self.assertIsInstance(review_dict["updated_at"], str)
+
 
 if __name__ == "__main__":
     unittest.main()
