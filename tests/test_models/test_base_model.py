@@ -18,16 +18,16 @@ class TestBaseModel(unittest.TestCase):
 
     def test_pep8_conformance_BaseModel(self):
         pep8style = pep8.StyleGuide(quiet=True)
-    result = pep8style.check_files(['models/base_model.py'])
-    self.assertEqual(
-        result.total_errors,
-        0,
-        "Found code style errors (and warnings).")
+        result = pep8style.check_files(['models/base_model.py'])
+        self.assertEqual(
+            result.total_errors,
+            0,
+            "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_BaseModel(self):
         pep8style = pep8.StyleGuide(quiet=True)
         result = pep8style.check_files(
-            ['tests/test_models/test_base_model.py'])
+                ['tests/test_models/test_base_model.py'])
         self.assertEqual(
             result.total_errors,
             0,
