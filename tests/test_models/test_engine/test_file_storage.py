@@ -2,6 +2,7 @@
 """
 test the functionality of file_storage.py
 """
+import os
 import json
 import unittest
 from models.base_model import BaseModel
@@ -18,7 +19,7 @@ class TestFileStorageSave(unittest.TestCase):
     def setUp(self):
         self.fs = FileStorage()
         self.obj1 = BaseModel()
-        self.obj = User()
+        self.obj2 = User()
 
     def test_save(self):
         """Test the save method"""
