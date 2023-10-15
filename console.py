@@ -82,14 +82,17 @@ class HBNBCommand(cmd.Cmd):
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
-        all_objs = storage.all(class_name)
+        all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
         
         if obj_id not in all_objs:
             print("** no instance found **")
             return
         obj = all_objs[obj_id]
-        print(obj)
+        if class_name != obj.__class__.__name__:
+            print("** no instance found **")
+        else:
+            print(obj)
 
     def do_destroy(self, args):
         """Deletes an instance based 
@@ -142,11 +145,11 @@ class HBNBCommand(cmd.Cmd):
             result = [str(all_objs[obj]) for obj in all_objs]
             print(result)
             return
-        if args not in HBNBCommand.__classes:
+        class_name = args.split()[0]
+        if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
-        result = [str(all_objs[obj])
-                  for obj in all_objs if obj.startswith(args + '.')]
+        result = [str(obj) for obj in all_objs.values() if obj.__class__.__name__ == class_name]
         print(result)
 
     def do_count(self, arg):
