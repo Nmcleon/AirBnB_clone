@@ -41,13 +41,43 @@ class FileStorage:
             json.dump(serialized_data, file)
 
     def reload(self):
-        try:
-            with open(FileStorage.__file_path, 'r') as file:
-                data = json.load(file)
-                for key, value in data.items():
-                    class_name, obj_id = key.split('.')
-                    if class_name in self.classes:
-                        obj = self.classes[class_name](**value)
-                        FileStorage.__objects[key] = obj
-        except Exception:
-            pass
+        with open(FileStorage.__file_path, 'r') as file:
+            serialized_data = json.load(file)
+        for key, value in serialized_data.items():
+            class_name, obj_id = key.split(".")
+            if class_name in self.classes:
+                obj = self.classes[class_name]()
+                obj.id = obj_id
+                for attr, val in value.items():
+                    if attr in obj.__dict__:
+                        obj.__dict__[attr] = val
+                FileStorage.__objects[key] = obj
+
+    def _serialize_user(self, obj):
+        if isinstance(obj, User):
+            return {
+                    "__class__": "User",
+                    "id": obj.id,
+                    "email": obj.email,
+                    "password": obj.password,
+                    "first_name": obj.first_name,
+                    "last_name": obj.last_name,
+                    "created_at": obj.created_at.isoformat(),
+                    "updated_at": obj.updated_at.isoformat(),
+                    }
+        else:
+            raise TypeError("Type not serializable")
+
+    def _deserialize_user(self, data):
+        if data["__class__"] == "User":
+            user = User()
+            user.id = data["id"]
+            user.email = data["email"]
+            user.password = data["password"]
+            user.first_name = data["first_name"]
+            user.last_name = data["last_name"]
+            user.created_at = datetime.fromisoformat(data["created_at"])
+            user.updated_at = datetime.fromisoformat(data["updated_at"])
+            return user
+        else:
+            raise TypeError("Type not deserializable")
