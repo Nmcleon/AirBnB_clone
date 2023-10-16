@@ -113,7 +113,7 @@ class HBNBCommand(cmd.Cmd):
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
-        all_objs = storage.all(class_name)
+        all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
         
         if obj_id not in all_objs:
@@ -121,6 +121,7 @@ class HBNBCommand(cmd.Cmd):
             return
         del all_objs[obj_id]
         storage.save()
+        print()
 
     def do_all(self, args):
         """List all string representations of all instances based on the class name"""
@@ -158,7 +159,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        if len(args) < 2:
+        if len(args) < 3:
             print("** instance id missing **")
             return
 
@@ -166,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         self.update_instance(class_name, obj_id, args[2:])
 
     def update_instance(self, class_name, obj_id, args):
-        all_objs = storage.all(class_name)
+        all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
 
         if obj_id not in all_objs:
@@ -178,6 +179,13 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
         attribute_name = args[0]
+        attribute_value = args[1]
+        if attribute_value.startswith('"') and attribute_value.endswith('"'):
+            attribute_value = attribute_value[1:-1]
+        if attribute_name in ['id', 'created_at', 'updated_at']:
+            return
+
+        """
         if len(args) < 3:
             print("** value missing **")
             return
@@ -193,7 +201,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 attribute_value = float(attribute_value)
             except ValueError:
-                pass
+                pass"""
 
         setattr(obj_to_update, attribute_name, attribute_value)
         obj_to_update.save()
