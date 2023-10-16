@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
@@ -32,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, line):
         """EOF command to exit the program"""
         return True
-    
+
     def do_help(self, line):
         """Get help on commands"""
         cmd.Cmd.do_help(self, line)
@@ -76,14 +77,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -108,14 +109,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -205,6 +206,7 @@ class HBNBCommand(cmd.Cmd):
 
         setattr(obj_to_update, attribute_name, attribute_value)
         obj_to_update.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
