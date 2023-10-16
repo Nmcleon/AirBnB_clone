@@ -13,7 +13,6 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
-
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
@@ -32,9 +31,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF command to exit the program"""
-        # print("")
         return True
-
+    
     def do_help(self, line):
         """Get help on commands"""
         cmd.Cmd.do_help(self, line)
@@ -55,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = args.split()[0]
 
         if class_name not in HBNBCommand.__classes:
-            print("** class name missing **")
+            print("** class name doesn't exist **")
             return
 
         new_obj = HBNBCommand.__classes[class_name]()
@@ -78,14 +76,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-
+        
         obj_id = args[1]
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-
+        
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -96,9 +94,7 @@ class HBNBCommand(cmd.Cmd):
             print(obj)
 
     def do_destroy(self, args):
-        """Deletes an instance based
-        on the class name and id
-        """
+        """Deletes an instance based on the class name and id"""
         obj_dict = storage.all()
         if not args:
             print("** class name missing **")
@@ -112,35 +108,22 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-
+        
         obj_id = args[1]
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
         all_objs = storage.all(class_name)
         obj_id = "{}.{}".format(class_name, obj_id)
-
+        
         if obj_id not in all_objs:
             print("** no instance found **")
             return
         del all_objs[obj_id]
         storage.save()
-        print()
-
-        """
-        #all_objs = storage.all()
-        #obj_id = "{}.{}".format(args[0], args[1])
-        if obj_id not in all_objs:
-            print("** no instance found **")
-            return
-        del all_objs[obj_id]
-        store.save()
-        """
 
     def do_all(self, args):
-        """List all string representation of all instances based
-        or not on the class name
-        """
+        """List all string representations of all instances based on the class name"""
         if not args:
             print([str(obj) for obj in storage.all().values()])
         else:
@@ -150,13 +133,17 @@ class HBNBCommand(cmd.Cmd):
                 return
             print([str(obj) for obj in storage.all(class_name).values()])
 
-    def do_count(self, arg):
+    def do_count(self, args):
         """Retrieve the number of instances of a given class"""
-        count = 0
-        for obj in storage.all().values():
-            if arg[0] == obj.__class__.name__:
-                count += 1
-        print(count)
+        if not args:
+            print("** class name missing **")
+            return
+        class_name = args.split()[0]
+        if class_name not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+            return
+        all_objs = storage.all(class_name)
+        print(len(all_objs))
 
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
@@ -190,11 +177,11 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 2:
             print("** attribute name missing **")
             return
-        attribute_name = args[2]
+        attribute_name = args[0]
         if len(args) < 3:
             print("** value missing **")
             return
-        attribute_value = args[3]
+        attribute_value = args[1]
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
             attribute_value = attribute_value[1:-1]
         if attribute_name in ['id', 'created_at', 'updated_at']:
