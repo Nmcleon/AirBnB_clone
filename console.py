@@ -14,8 +14,8 @@ from models.review import Review
 from models.engine.file_storage import FileStorage
 
 """def check(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
+    curly_braces = re.search(r"\\{(.*?)\\}", arg)
+    brackets = re.search(r"\\[(.*?)\\]", arg)
     if curly_braces is None:
         if brackets is None:
             return [i.strip(",") for i in split(arg)]
@@ -145,29 +145,29 @@ class HBNBCommand(cmd.Cmd):
         """List all string representations of all instances based on the class name"""
         curly_braces = re.search(r"\{(.*?)\}", arg)
         brackets = re.search(r"\[(.*?)\]", arg)
-    
+
     if curly_braces is None:
         if brackets is None:
             argl = [i.strip(",") for i in split(arg)]
             class_name = argl[0] if argl else None
         else:
             lexer = split(arg[:brackets.span()[0]]
-            retl = [i.strip(",") for i in lexer]
+            retl=[i.strip(",") for i in lexer]
             retl.append(brackets.group())
-            argl = retl
-            class_name = argl[0] if argl else None
+            argl=retl
+            class_name=argl[0] if argl else None
     else:
-        lexer = split(arg[:curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
+        lexer=split(arg[:curly_braces.span()[0]])
+        retl=[i.strip(",") for i in lexer]
         retl.append(curly_braces.group())
-        argl = retl
-        class_name = argl[0] if argl else None
-    
+        argl=retl
+        class_name=argl[0] if argl else None
+
     if class_name and class_name not in HBNBCommand.__classes:
         print("** class doesn't exist **")
         return
 
-    objl = []
+    objl=[]
     for obj in storage.all().values():
         if not class_name or class_name == obj.__class__.__name__:
             objl.append(obj.__str__)
@@ -179,11 +179,11 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        class_name = args.split()[0]
+        class_name=args.split()[0]
         if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
-        all_objs = storage.all(class_name)
+        all_objs=storage.all(class_name)
         print(len(all_objs))
 
     def do_update(self, args):
@@ -192,8 +192,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        args = args.split()
-        class_name = args[0]
+        args=args.split()
+        class_name=args[0]
 
         if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
@@ -203,25 +203,25 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        obj_id = args[1]
+        obj_id=args[1]
         self.update_instance(class_name, obj_id, args[2:])
 
     def update_instance(self, class_name, obj_id, args):
-        all_objs = storage.all()
-        obj_id = "{}.{}".format(class_name, obj_id)
+        all_objs=storage.all()
+        obj_id="{}.{}".format(class_name, obj_id)
 
         if obj_id not in all_objs:
             print("** no instance found **")
             return
 
-        obj_to_update = all_objs[obj_id]
+        obj_to_update=all_objs[obj_id]
         if len(args) < 2:
             print("** attribute name missing **")
             return
-        attribute_name = args[0]
-        attribute_value = args[1]
+        attribute_name=args[0]
+        attribute_value=args[1]
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
-            attribute_value = attribute_value[1:-1]
+            attribute_value=attribute_value[1:-1]
         if attribute_name in ['id', 'created_at', 'updated_at']:
             return
 
