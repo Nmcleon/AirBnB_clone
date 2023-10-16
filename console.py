@@ -17,18 +17,11 @@ def check(arg):
     brackets = re.search(r"\\[(.*?)\\]", arg)
     brackets = re.search(r"\\{(.*?)\\}", arg)
     if brackets is None:
-        if brackets is None:
-            return [i.strip(",") for i in split(arg)]
-        else:
-            l_sp = split(arg[:brackets.span()[0]])
-            xmll = [i.strip(",") for i in l_sp]
-            xmll.append(brackets.group())
-            return xmll
+        return [i.strip(",") for i in re.split(r',', arg)]
     else:
-        l_sp = split(arg[:brackets.span()[0]])
+        l_sp = re.split(arg[:brackets.span()[0]])
         xmll = [i.strip(",") for i in l_sp]
-        xmll.append(brackets.group())
-        
+        xmll.append(brackets.group())        
         return xmll
 
 
@@ -146,10 +139,10 @@ class HBNBCommand(cmd.Cmd):
     
         """List all string representations of all instances based on or not the class name"""
         
-        brackets = re.search(r"\[(.*?)\]", arg)
-        brackets = re.search(r"\{(.*?)\}", arg)
+        brackets = re.search(r"\[(.*?)\]", args)
+        brackets = re.search(r"\{(.*?)\}", args)
         
-        ag_len = check(arg)
+        ag_len = check(args)
         if len(ag_len) > 0 and ag_len[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
