@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
@@ -31,9 +32,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF command to exit the program"""
-        #print("")
+        # print("")
         return True
-    
+
     def do_help(self, line):
         """Get help on commands"""
         cmd.Cmd.do_help(self, line)
@@ -77,14 +78,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.show_instance(class_name, obj_id)
 
     def show_instance(self, class_name, obj_id):
         all_objs = storage.all()
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
@@ -95,7 +96,7 @@ class HBNBCommand(cmd.Cmd):
             print(obj)
 
     def do_destroy(self, args):
-        """Deletes an instance based 
+        """Deletes an instance based
         on the class name and id
         """
         obj_dict = storage.all()
@@ -111,21 +112,21 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         obj_id = args[1]
         self.destroy_instance(class_name, obj_id)
 
     def destroy_instance(self, class_name, obj_id):
         all_objs = storage.all(class_name)
         obj_id = "{}.{}".format(class_name, obj_id)
-        
+
         if obj_id not in all_objs:
             print("** no instance found **")
             return
         del all_objs[obj_id]
         storage.save()
         print()
-        
+
         """
         #all_objs = storage.all()
         #obj_id = "{}.{}".format(args[0], args[1])
@@ -154,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
         count = 0
         for obj in storage.all().values():
             if arg[0] == obj.__class__.name__:
-                count +=1
+                count += 1
         print(count)
 
    def do_update(self, args):
