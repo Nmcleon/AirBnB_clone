@@ -143,21 +143,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """List all string representations of all instances based on the class name"""
-        curly_braces = re.search(r"\{(.*?)\}", arg)
-        brackets = re.search(r"\[(.*?)\]", arg)
-    
-    if curly_braces is None:
+        if curly_braces is None:
         if brackets is None:
             argl = [i.strip(",") for i in split(arg)]
             class_name = argl[0] if argl else None
         else:
-            lexer = split(arg[:brackets.span()[0]]
+            lexer = split(arg[:brackets.span()[0]])
             retl = [i.strip(",") for i in lexer]
             retl.append(brackets.group())
             argl = retl
             class_name = argl[0] if argl else None
     else:
-        lexer = split(arg[:curly_braces.span()[0]])
+        lexer = split(arg[:curly_braces.span()[0])
         retl = [i.strip(",") for i in lexer]
         retl.append(curly_braces.group())
         argl = retl
@@ -170,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
     objl = []
     for obj in storage.all().values():
         if not class_name or class_name == obj.__class__.__name__:
-            objl.append(obj.__str__)
+            objl.append(obj.__str__())
 
     print(objl)
 
