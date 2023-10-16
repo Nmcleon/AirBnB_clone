@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 def check(arg):
     brackets = re.search(r"\\[(.*?)\\]", arg)
     brackets = re.search(r"\\{(.*?)\\}", arg)
@@ -21,7 +22,7 @@ def check(arg):
     else:
         l_sp = re.split(arg[:brackets.span()[0]])
         xmll = [i.strip(",") for i in l_sp]
-        xmll.append(brackets.group())        
+        xmll.append(brackets.group())
         return xmll
 
 
@@ -136,12 +137,12 @@ class HBNBCommand(cmd.Cmd):
         print()
 
     def do_all(self, args):
-    
-        """List all string representations of all instances based on or not the class name"""
-        
+        """List string representations of all instances based
+        on or not the class name"""
+
         brackets = re.search(r"\[(.*?)\]", args)
         brackets = re.search(r"\{(.*?)\}", args)
-        
+
         ag_len = check(args)
         if len(ag_len) > 0 and ag_len[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
@@ -159,11 +160,11 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        class_name=args.split()[0]
+        class_name = args.split()[0]
         if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
-        all_objs=storage.all(class_name)
+        all_objs = storage.all(class_name)
         print(len(all_objs))
 
     def do_update(self, args):
@@ -172,8 +173,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        args=args.split()
-        class_name=args[0]
+        args = args.split()
+        class_name = args[0]
 
         if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
@@ -183,25 +184,25 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        obj_id=args[1]
+        obj_id = args[1]
         self.update_instance(class_name, obj_id, args[2:])
 
     def update_instance(self, class_name, obj_id, args):
-        all_objs=storage.all()
-        obj_id="{}.{}".format(class_name, obj_id)
+        all_objs = storage.all()
+        obj_id = "{}.{}".format(class_name, obj_id)
 
         if obj_id not in all_objs:
             print("** no instance found **")
             return
 
-        obj_to_update=all_objs[obj_id]
+        obj_to_update = all_objs[obj_id]
         if len(args) < 2:
             print("** attribute name missing **")
             return
-        attribute_name=args[0]
-        attribute_value=args[1]
+        attribute_name = args[0]
+        attribute_value = args[1]
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
-            attribute_value=attribute_value[1:-1]
+            attribute_value = attribute_value[1:-1]
         if attribute_name in ['id', 'created_at', 'updated_at']:
             return
 
