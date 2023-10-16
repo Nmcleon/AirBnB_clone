@@ -140,17 +140,14 @@ class HBNBCommand(cmd.Cmd):
         """List all string representation of all instances based
         or not on the class name
         """
-        all_objs = storage.all()
         if not args:
-            result = [str(all_objs[obj]) for obj in all_objs]
-            print(result)
-            return
-        class_name = args.split()[0]
-        if class_name not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
-            return
-        result = [str(obj) for obj in all_objs.values() if obj.__class__.__name__ == class_name]
-        print(result)
+            print([str(obj) for obj in storage.all().values()])
+        else:
+            class_name = args.split()[0]
+            if class_name not in HBNBCommand.class_dict:
+                print("** class doesn't exist **")
+                return
+            print([str(obj) for obj in storage.all(class_name).values()])
 
     def do_count(self, arg):
         """Retrieve the number of instances of a given class"""
@@ -160,7 +157,7 @@ class HBNBCommand(cmd.Cmd):
                 count +=1
         print(count)
 
-    def do_update(self, args):
+   def do_update(self, args):
         """Updates an instance based on the class name and id"""
         if not args:
             print("** class name missing **")
@@ -169,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
         args = args.split()
         class_name = args[0]
 
-        if class_name not in HBNBCommand.classes:
+        if class_name not in HBNBCommand.class_dict:
             print("** class doesn't exist **")
             return
 
@@ -180,14 +177,26 @@ class HBNBCommand(cmd.Cmd):
         obj_id = args[1]
         self.update_instance(class_name, obj_id, args[2:])
 
-            
-        attribute_name = split_args[2]
-        attribute_value = split_args[3]
+    def update_instance(self, class_name, obj_id, args):
+        all_objs = storage.all(class_name)
+        obj_id = "{}.{}".format(class_name, obj_id)
+
+        if obj_id not in all_objs:
+            print("** no instance found **")
+            return
+
+        obj_to_update = all_objs[obj_id]
+        if len(args) < 2:
+            print("** attribute name missing **")
+            return
+        attribute_name = args[2]
+        if len(args) < 3:
+            print("** value missing **")
+            return
+        attribute_value = args[3]
         if attribute_value.startswith('"') and attribute_value.endswith('"'):
             attribute_value = attribute_value[1:-1]
-        obj_to_update = all_objs[obj_id]
-        if attribute_name in {'id', 'created_at', 'updated_at'}:
-            print("** cannot update 'id', 'created_at', or 'updated_at' **")
+        if attribute_name in ['id', 'created_at', 'updated_at']:
             return
 
         try:
@@ -197,8 +206,9 @@ class HBNBCommand(cmd.Cmd):
                 attribute_value = float(attribute_value)
             except ValueError:
                 pass
-            
-            setattr(obj_to_update, attribute_name, attribute_value)
-            obj_to_update.save()
+
+        setattr(obj_to_update, attribute_name, attribute_value)
+        obj_to_update.save()
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
