@@ -13,7 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
-def check(arg):
+"""def check(arg):
     curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
@@ -28,7 +28,7 @@ def check(arg):
         lexer = split(arg[:curly_braces.span()[0]])
         xmll = [i.strip(",") for i in lexer]
         xmll.append(curly_braces.group())
-        return xmll
+        return xmll"""
 
 
 class HBNBCommand(cmd.Cmd):
@@ -143,17 +143,36 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """List all string representations of all instances based on the class name"""
-        a_len = check(arg)
-        if len(a_len) > 0 and a_len[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
+        curly_braces = re.search(r"\{(.*?)\}", arg)
+        brackets = re.search(r"\[(.*?)\]", arg)
+    
+    if curly_braces is None:
+        if brackets is None:
+            argl = [i.strip(",") for i in split(arg)]
+            class_name = argl[0] if argl else None
         else:
-            objl = []
-            for obj in storage.all().values():
-                if len(a_len) > 0 and a_len[0] == obj.__class__.__name__:
-                    objl.append(obj.__str__())
-                elif len(a_len) == 0:
-                    objl.append(obj.__str__())
-            print(objl)
+            lexer = split(arg[:brackets.span()[0]]
+            retl = [i.strip(",") for i in lexer]
+            retl.append(brackets.group())
+            argl = retl
+            class_name = argl[0] if argl else None
+    else:
+        lexer = split(arg[:curly_braces.span()[0]])
+        retl = [i.strip(",") for i in lexer]
+        retl.append(curly_braces.group())
+        argl = retl
+        class_name = argl[0] if argl else None
+    
+    if class_name and class_name not in HBNBCommand.__classes:
+        print("** class doesn't exist **")
+        return
+
+    objl = []
+    for obj in storage.all().values():
+        if not class_name or class_name == obj.__class__.__name__:
+            objl.append(obj.__str__)
+
+    print(objl)
 
     def do_count(self, args):
         """Retrieve the number of instances of a given class"""
