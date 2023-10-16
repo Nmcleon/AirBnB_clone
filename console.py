@@ -145,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
             print([str(obj) for obj in storage.all().values()])
         else:
             class_name = args.split()[0]
-            if class_name not in HBNBCommand.class_dict:
+            if class_name not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
                 return
             print([str(obj) for obj in storage.all(class_name).values()])
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
-   def do_update(self, args):
+    def do_update(self, args):
         """Updates an instance based on the class name and id"""
         if not args:
             print("** class name missing **")
@@ -167,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         args = args.split()
         class_name = args[0]
 
-        if class_name not in HBNBCommand.class_dict:
+        if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
 
