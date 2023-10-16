@@ -149,7 +149,9 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
-        result = [str(obj) for obj in all_objs.values() if obj.__class__.__name__ == class_name]
+        all_instances = HBNBCommand.__classes[class_name].all()
+        result = [str(instance) for instance in all_instances]
+       # result = [str(obj) for obj in all_objs.values() if obj.__class__.__name__ == class_name]
         print(result)
 
     def do_count(self, arg):
