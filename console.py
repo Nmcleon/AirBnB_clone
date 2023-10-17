@@ -18,12 +18,12 @@ def check(arg):
     brackets = re.search(r"\\[(.*?)\\]", arg)
     brackets = re.search(r"\\{(.*?)\\}", arg)
     if brackets is None:
-        return [i.strip(",") for i in re.split(r',', arg)]
-    else:
-        l_sp = re.split(arg[:brackets.span()[0]])
-        xmll = [i.strip(",") for i in l_sp]
-        xmll.append(brackets.group())
-        return xmll
+		return [i.strip(",") for i in re.split(r',', arg)]
+	else:
+		l_sp = re.split(arg[:brackets.span()[0]])
+		xmll = [i.strip(",") for i in l_sp]
+		xmll.append(brackets.group())
+		return xmll
 
 
 class HBNBCommand(cmd.Cmd):
@@ -149,12 +149,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             obj_length = []
             
-            for obj in storage.all().values():
-                if len(ag_len) > 0 and ag_len[0] == obj.__class__.__name__:
-                    obj_length.append(obj.__str__())
-                elif len(ag_len) == 0:
-                    obj_length.append(obj.__str__())
-                    print(obj_length)
+        for obj in storage.all().values():
+			if len(ag_len) > 0 and ag_len[0] == obj.__class__.__name__:
+				obj_length.append(obj.__str__())
+			elif len(ag_len) == 0:
+				obj_length.append(obj.__str__())
+				print(obj_length)
 
     def do_count(self, args):
         """Retrieve the number of instances of a given class"""
