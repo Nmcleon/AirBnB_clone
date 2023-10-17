@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
         line = args.split()
         objects = storage.all()
         do_print = []
-	if len(line) == 0:
+        if len(line) == 0:
             for v in objects.values():
                 do_print.append(str(v))
         elif line[0] in HBNBCommand.__classes:
