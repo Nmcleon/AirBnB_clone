@@ -14,18 +14,6 @@ from models.review import Review
 from models.engine.file_storage import FileStorage
 
 
-def check(arg):
-    brackets = re.search(r"\\[(.*?)\\]", arg)
-    brackets = re.search(r"\\{(.*?)\\}", arg)
-    if brackets is None:
-		return [i.strip(",") for i in re.split(r',', arg)]
-	else:
-		l_sp = re.split(arg[:brackets.span()[0]])
-		xmll = [i.strip(",") for i in l_sp]
-		xmll.append(brackets.group())
-		return xmll
-
-
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __classes = {
@@ -139,22 +127,20 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """List string representations of all instances based
         on or not the class name"""
-
-        brackets = re.search(r"\[(.*?)\]", args)
-        brackets = re.search(r"\{(.*?)\}", args)
-
-        ag_len = check(args)
-        if len(ag_len) > 0 and ag_len[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
+	line = args.split()
+        objects = storage.all()
+        do_print = []
+	if len(line) == 0:
+            for v in objects.values():
+                do_print.append(str(v))
+        elif line[0] in HBNBCommand.__classes:
+            for k, v in objects.items():
+                if line[0] in k:
+                    do_print.append(str(v))
         else:
-            obj_length = []
-            
-        for obj in storage.all().values():
-			if len(ag_len) > 0 and ag_len[0] == obj.__class__.__name__:
-				obj_length.append(obj.__str__())
-			elif len(ag_len) == 0:
-				obj_length.append(obj.__str__())
-				print(obj_length)
+            print("** class doesn't exist **")
+            return False
+        print(do_print)
 
     def do_count(self, args):
         """Retrieve the number of instances of a given class"""
