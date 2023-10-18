@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 class FileStorage:
-    __file_path = os.path.abspath(os.path.dirname(__file__) + "/file.json")
+    __file_path = 'file.json'
     __objects = {}
     classes = {}
 
