@@ -16,7 +16,7 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """entry point of the command interpreter."""
     prompt = '(hbnb) '
-    class_list = ['BaseModel', 'User', 'State', 'City', 'Amenity', 'Place',
+    c_lst = ['BaseModel', 'User', 'State', 'City', 'Amenity', 'Place',
                   'Review']
 
     def do_EOF(self, args):
@@ -37,10 +37,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """Create a new object"""
-        line = args.split()
-        if not self.verify_class(line):
+        lne = args.split()
+        if not self.verify_class(lne):
             return
-        instance = eval(line[0] + '()')
+        instance = eval(lne[0] + '()')
         if isinstance(instance, BaseModel):
             instance.save()
             print(instance.id)
@@ -49,40 +49,40 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, args):
         """Print the string representation of an instance
         based on the class name and id"""
-        line = args.split()
-        if not self.verify_class(line):
+        lne = args.split()
+        if not self.verify_class(lne):
             return
-        if not self.verify_id(line):
+        if not self.verify_id(lne):
             return
-        key = '{}.{}'.format(line[0], line[1])
+        i = '{}.{}'.format(lne[0], lne[1])
         objects = models.storage.all()
-        print(objects[key])
+        print(objects[i])
 
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id"""
-        line = args.split()
-        if not self.verify_class(line):
+        lne = args.split()
+        if not self.verify_class(lne):
             return
-        if not self.verify_id(line):
+        if not self.verify_id(lne):
             return
-        key = '{}.{}'.format(line[0], line[1])
+        a_len = '{}.{}'.format(lne[0], lne[1])
         objects = models.storage.all()
-        del objects[key]
+        del objects[a_len]
         models.storage.save()
 
     def do_all(self, args):
         """List all string representations of instances based
         on or not the class name """
-        line = args.split()
+        lne = args.split()
         objects = models.storage.all()
         to_print = []
-        if len(line) == 0:
-            for v in objects.values():
-                to_print.append(str(v))
-        elif line[0] in HBNBCommand.class_list:
-            for k, v in objects.items():
-                if line[0] in k:
-                    to_print.append(str(v))
+        if len(lne) == 0:
+            for j in objects.values():
+                to_print.append(str(j))
+        elif lne[0] in HBNBCommand.c_lst:
+            for i, j in objects.items():
+                if lne[0] in i:
+                    to_print.append(str(j))
         else:
             print("** class doesn't exist **")
             return False
@@ -90,96 +90,96 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, args):
         """Updates an instance based on the class name and id"""
-        line = args.split()
-        if not self.verify_class(line):
+        lne = args.split()
+        if not self.verify_class(lne):
             return
-        if not self.verify_id(line):
+        if not self.verify_id(lne):
             return
-        if not self.verify_attribute(line):
+        if not self.verify_attribute(lne):
             return
         objects = models.storage.all()
-        key = '{}.{}'.format(line[0], line[1])
-        setattr(objects[key], line[2], line[3])
+        a_len = '{}.{}'.format(lne[0], lne[1])
+        setattr(objects[a_len], lne[2], lne[3])
         models.storage.save()
 
     def default(self, args):
         """called when the inputted command starts
         with a class name.  """
-        line = args.strip('()').split(".")
-        if len(line) < 2:
+        lne = args.strip('()').split(".")
+        if len(lne) < 2:
             print('** missing attribute **')
             return
         objects = models.storage.all()
-        class_name = line[0].capitalize()
-        cmd_name = line[1].lower()
-        split2 = cmd_name.strip(')').split('(')
-        cmd_name = split2[0]
-        if cmd_name == 'all':
-            HBNBCommand.do_all(self, class_name)
-        elif cmd_name == 'count':
+        class_nme = lne[0].capitalize()
+        cmd_nme = lne[1].lower()
+        spt_2 = cmd_nme.strip(')').split('(')
+        cmd_nme = spt_2[0]
+        if cmd_nme == 'all':
+            HBNBCommand.do_all(self, class_nme)
+        elif cmd_nme == 'count':
             count = 0
-            for k in objects.keys():
-                key = k.split('.')
-                if class_name == key[0]:
+            for i in objects.ieys():
+                a_len = i.split('.')
+                if class_nme == a_len[0]:
                     count += 1
             print(count)
-        elif cmd_name == 'show':
-            if len(split2) < 2:
+        elif cmd_nme == 'show':
+            if len(spt_2) < 2:
                 print('** no instance found **')
             else:
-                HBNBCommand.do_show(self, class_name + ' ' + split2[1])
-        elif cmd_name == 'destroy':
-            if len(split2) < 2:
+                HBNBCommand.do_show(self, class_nme + ' ' + spt_2[1])
+        elif cmd_nme == 'destroy':
+            if len(spt_2) < 2:
                 print('** no instance found **')
             else:
-                HBNBCommand.do_destroy(self, class_name + ' ' + split2[1])
-        elif cmd_name == 'update':
-            split3 = split2[1].split(', ')
-            if len(split3) == 0:
+                HBNBCommand.do_destroy(self, class_nme + ' ' + spt_2[1])
+        elif cmd_nme == 'update':
+            spt_3 = spt_2[1].split(', ')
+            if len(spt_3) == 0:
                 print('** no instance found **')
-            elif len(split3) == 1 and type(split3[1]) == dict:
-                for k, v in split[1].items():
-                    HBNBCommand.do_update(self, class_name + ' ' + split3[0] +
-                                          ' ' + k + ' ' + v)
-            elif len(split3) == 1 and type(split3[1]) != dict:
+            elif len(spt_3) == 1 and type(spt_3[1]) == dict:
+                for i, j in split[1].items():
+                    HBNBCommand.do_update(self, class_nme + ' ' + spt_3[0] +
+                                          ' ' + i + ' ' + j)
+            elif len(spt_3) == 1 and type(spt_3[1]) != dict:
                 print('** no instance found **')
-            elif len(split3) == 2:
+            elif len(spt_3) == 2:
                 print('** no instance found **')
             else:
-                HBNBCommand.do_update(self, class_name + ' ' + split3[0] +
-                                      ' ' + split3[1] + ' ' + split3[2])
+                HBNBCommand.do_update(self, class_nme + ' ' + spt_3[0] +
+                                      ' ' + spt_3[1] + ' ' + spt_3[2])
 
     @classmethod
-    def verify_class(cls, line):
+    def verify_class(cls, lne):
         """verify input class"""
-        if len(line) == 0:
+        if len(lne) == 0:
             print('** class name missing **')
             return False
-        elif line[0] not in HBNBCommand.class_list:
+        elif lne[0] not in HBNBCommand.c_lst:
             print('** class doesn\'t exist **')
             return False
         return True
 
     @staticmethod
-    def verify_id(line):
+    def verify_id(lne):
         """verify id"""
-        if len(line) < 2:
+        if len(lne) < 2:
             print('** instance id missing **')
             return False
         objects = models.storage.all()
-        key = '{}.{}'.format(line[0], line[1])
-        if key not in objects.keys():
+        a_len = '{}.{}'.format(lne[0], lne[1])
+        if a_len not in objects.keys():
             print('** no instance found **')
             return False
         return True
 
     @staticmethod
-    def verify_attribute(line):
+    def verify_attribute(lne):
         """verify the attribute in input line. """
-        if len(line) < 3:
+        if len(lne) < 3:
             print("** attribute name missing **")
             return False
-        elif len(line) < 4:
+        elif len(lne) < 4:
             print("** value missing **")
             return False
         return True
