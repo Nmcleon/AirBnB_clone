@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 class FileStorage:
-    __file_path = "file.json"
+    __file_path = os.path.abspath("file.json")
     __objects = {}
     classes = {}
 
