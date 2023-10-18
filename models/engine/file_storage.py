@@ -31,8 +31,8 @@ class FileStorage:
     def save(self):
         """serializes __objects to the file.json"""
         dictionary = dict()
-        for k, v in FileStorage.__objects.items():
-            dictionary[k] = v.to_dict()
+        for i, j in FileStorage.__objects.items():
+            dictionary[i] = j.to_dict()
         with open(FileStorage.__file_path, 'w', encoding='utf-8') as file:
             json.dump(dictionary, file)
 
@@ -41,7 +41,7 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
                 json_load = json.load(file)
-            for k, v in json_load.items():
-                FileStorage.__objects[k] = BaseModel(**v)
+            for i, j in json_load.items():
+                FileStorage.__objects[i] = BaseModel(**j)
         except:
             pass
