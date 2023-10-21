@@ -1,0 +1,15 @@
+footer {
+	background-color: white;
+	height: 60px;
+	width: 100%;
+	bottom: 0px;
+	border-top: 1px #CCCCCC;
+	position: absolute;
+}
+
+.txt_footer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
